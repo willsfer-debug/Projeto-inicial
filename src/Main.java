@@ -2,10 +2,9 @@
 public class Main{
     
     public static void main (String[] args){
-         java.awt.EventQueue.invokeLater(() -> {
-            new cadastroVIEW().setVisible(true);
-        });
-
+        cadastroVIEW telaCadastro = new cadastroVIEW();
+        telaCadastro.setVisible(true);
+          
     }
     
 }

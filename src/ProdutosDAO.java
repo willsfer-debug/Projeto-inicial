@@ -1,18 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author Adm
- */
 
 import java.sql.PreparedStatement;
 import java.sql.Connection;
-import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.sql.SQLException;
 
 
 public class ProdutosDAO {
@@ -23,12 +14,35 @@ public class ProdutosDAO {
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
     public void cadastrarProduto (ProdutosDTO produto){
-        
-        
-        //conn = new conectaDAO().connectDB();
+    
         
         
     }
+    
+    public void salvarProduto (ProdutosDTO produto){
+
+    String sql = "INSERT INTO produtos (nome, valor) VALUES (?, ?)";
+
+    try {
+        conectaDAO conexao = new conectaDAO();
+        conexao.conectar();
+
+        PreparedStatement stmt = conexao.getConexao().prepareStatement(sql);
+
+        stmt.setString(1, produto.getNome());
+        stmt.setInt(2, produto.getValor());
+
+        stmt.executeUpdate();
+
+        stmt.close();
+        conexao.desconectar();
+
+        System.out.println("Produto salvo com sucesso!");
+
+    } catch (SQLException e) {
+        System.out.println("Erro ao salvar produto: " + e.getMessage());
+    }
+}
     
     public ArrayList<ProdutosDTO> listarProdutos(){
         
