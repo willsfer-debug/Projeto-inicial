@@ -32,6 +32,53 @@ public class ProdutosDAO {
             System.out.println("Erro ao cadastrar: " + erro.getMessage());
         }
     }
+    
+     public ArrayList<ProdutosDTO> listarProdutos() {
+        String sql = "SELECT * FROM produtos ";
+        
+        ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+        
+        conectaDAO conecta = new conectaDAO();
+        conecta.connectDAO();
+        conn = conecta.getConexao();
+
+        try {
+            prep = conn.prepareStatement(sql);
+            ResultSet rs = prep.executeQuery();
+
+            while (rs.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(rs.getInt("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setValor(rs.getInt("valor"));
+                produto.setStatus(rs.getString("status"));
+
+                listagem.add(produto);
+            }
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro ao listar vendas: " + erro.getMessage());
+        }
+        return listagem;
+        
+     }
+    
+     public void venderProduto(int id) {
+        String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
+        conectaDAO conecta = new conectaDAO();
+        conecta.connectDAO();
+        conn = conecta.getConexao();
+
+        try (PreparedStatement prep = conn.prepareStatement(sql)) 
+        
+        {
+            prep.setInt(1, id);
+            prep.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + e.getMessage());
+        }
+    }
 
     public ArrayList<ProdutosDTO> listarProdutosVendidos() {
         String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
@@ -59,24 +106,6 @@ public class ProdutosDAO {
             JOptionPane.showMessageDialog(null, "Erro ao listar vendas: " + erro.getMessage());
         }
         return listagem;
-    }
-
-    public void venderProduto(int id) {
-        String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
-        conectaDAO conecta = new conectaDAO();
-        conecta.connectDAO();
-        conn = conecta.getConexao();
-
-        try (PreparedStatement prep = conn.prepareStatement(sql)) 
-        
-        {
-            prep.setInt(1, id);
-            prep.executeUpdate();
-
-            JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + e.getMessage());
-        }
     }
 
 }
