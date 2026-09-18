@@ -16,12 +16,12 @@ public class listagemVIEW extends javax.swing.JFrame {
     private void listarProdutos() {
     try {
         ProdutosDAO produtosdao = new ProdutosDAO();
-        DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel(); 
+        DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
         model.setNumRows(0);
-
-        ArrayList<ProdutosDTO> lista = produtosdao.listarProdutos();
-
-        for (ProdutosDTO p : lista) {
+        
+        ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutosVendidos();
+        
+        for (ProdutosDTO p : listagem) {
             model.addRow(new Object[]{
                 p.getId(),
                 p.getNome(),
